@@ -24,3 +24,41 @@ function assignClickHandler () {
     document.getElementById('inputs').reset()
   })
 }
+
+// send HTTP request via AJAX to python route
+$(document).ready(function() {
+  $('#loadData').on("click", function() {
+    $.ajax ({
+      method: 'GET',
+      url: '/users',
+      data: {
+        fullName : $('#fullName').val(),
+        major : $('#major').val(),
+        startYear : $('#startYear').val()
+      },
+      dataType: 'text',
+      success: function(data) {
+        $('#enteredRecords').html()
+      }
+    })
+  })
+});
+
+//add data to json file
+$(document).ready(function() {
+  $('#addRec').on('click', function() {
+    $.ajax({
+      method: 'POST',
+      url: '/user/',
+      success: function(data) {
+        $.each(data, function() {
+          $('records').push({
+            fullName : $('#fullName').val(),
+            major : $('#major').val(),
+            startYear : $('#startYear').val()
+          })
+        })
+      }
+    })
+  })
+});

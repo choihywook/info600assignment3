@@ -36,7 +36,7 @@ def getUsers():
         d = json.load(f)
         return(d)
 
-@app.route('/user/', methods = ['GET'])
+@app.route('/user/', methods = ['POST'])
 def addUser():
     newId = uuid.uuid4().hex[:6]
 
@@ -58,7 +58,7 @@ def addUser():
 
     writeToFile(data, fileName)
 
-@app.route('/user/<user_id>', methods = ['GET'])
+@app.route('/user/<user_id>', methods = ['DELETE'])
 def deleteUser(user_id):
     data = ''
     fileName = 'data/entries.json'
