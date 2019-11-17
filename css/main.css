@@ -20,3 +20,24 @@ ul {
 #buttonParent {
   margin-top: 1.1em;
 }
+
+#enteredRecords span {
+  padding: 0 1px;
+}
+
+span.time {
+  background-color: #236584;
+  color: #ffffff;
+}
+
+span.fullName {
+  color: #261CC4;
+}
+
+span.major {
+  color: #1C91C4;
+}
+
+span.startYear {
+  color: #B61616;
+}
