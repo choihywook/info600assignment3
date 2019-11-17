@@ -25,19 +25,19 @@ ul {
   padding: 0 1px;
 }
 
-span.time {
+.time {
   background-color: #236584;
   color: #ffffff;
 }
 
-span.fullName {
+.fullName {
   color: #261CC4;
 }
 
-span.major {
+.major {
   color: #1C91C4;
 }
 
-span.startYear {
+.startYear {
   color: #B61616;
 }
