@@ -56,7 +56,8 @@ def addUser():
         # Add a new record to the JSON
         data["records"].append(newUser)
 
-    writeToFile(data, fileName)
+    writeToFile(fileName, data)
+    return make_response(newUser, 201)
 
 @app.route('/user/<user_id>', methods = ['DELETE'])
 def deleteUser(user_id):

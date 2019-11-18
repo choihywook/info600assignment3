@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', assignClickHandler)
-
+// document.addEventListener('DOMContentLoaded', assignClickHandler)
 function assignClickHandler () {
   document.getElementById('addRec').addEventListener('click', function () {
     const startYear = document.getElementById('startYear').value
@@ -25,7 +24,7 @@ function assignClickHandler () {
   })
 }
 
-// send HTTP request via AJAX to python route
+// send HTTP request via AJAX to python route and display the data in html
 $(document).ready(function() {
   $('#loadData').on("click", function() {
     $.ajax ({
@@ -36,29 +35,56 @@ $(document).ready(function() {
         major : $('#major').val(),
         startYear : $('#startYear').val()
       },
-      dataType: 'text',
+      dataType: 'json',
       success: function(data) {
-        $('#enteredRecords').html()
+        var record = $("#enteredRecords");
+        record.html("");
+        data.records.forEach(function(user) {
+          var li = $("<li />");
+          const date = new Date();
+          var time = $("<span />", {className: "time"}).html(date.getHours() + ':' + date.getMinutes() + "  -");
+          var fullName = $("<span />", {className: "fullName"}).html(user.fullName + ", ");
+          var major = $("<span />", {className: "major"}).html(user.major + ", ");
+          var startYear = $("<span />", {className: "startYear"}).html(user.startYear);
+          var button = $("<button />").data("userId", user.id).html('Delete');
+          li.append(time).append(fullName).append(major).append(startYear).append(button);
+          record.append(li);
+        })
+      }
+    })
+  })
+
+  // delete the record
+  $("#enteredRecords").on('click', 'button', function(){
+    var codeButt = $(this);
+    var userId = codeButt.data("userId");
+    $.ajax({
+      method: 'DELETE',
+      url: '/user/' + userId,
+      success: function(data) {
+        alert("User Deleted!");
+      }
+    });
+  })
+
+  //add data to json file and check the start year
+  $('#addRec').on('click', function() {
+    var startYear = $("#startYear").val();
+    if (parseInt(startYear, 10) <= 2000) {
+      alert('Incorrect year: ' + startYear);
+      return false
+    }
+    $.ajax({
+      method: 'POST',
+      url: '/user/',
+      data: $("#inputs").serialize(),
+      success: function(data) {
+        $('#fullName').val("");
+        $('#major').val("");
+        $('#startYear').val("");
       }
     })
   })
 });
 
-//add data to json file
-$(document).ready(function() {
-  $('#addRec').on('click', function() {
-    $.ajax({
-      method: 'POST',
-      url: '/user/',
-      success: function(data) {
-        $.each(data, function() {
-          $('records').push({
-            fullName : $('#fullName').val(),
-            major : $('#major').val(),
-            startYear : $('#startYear').val()
-          })
-        })
-      }
-    })
-  })
-});
+
